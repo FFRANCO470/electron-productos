@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/lux/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="css/bootstrap.min.css">-->
+</head>
+<body>
+    <form class="p-4">
+        <div class="form-group">
+            <input type="text" id="name" class="form-control" placeholder="Product's Name" autofocus>
+        </div>
+        <div class="form-group">
+            <input type="text" id="price" class="form-control" placeholder="Product's Price" >
+        </div>
+        <div class="form-group">
+            <input type="text" id="description" class="form-control" placeholder="Product's Description" >
+        </div>
+        <button class="btn btn-primary btn-block">
+            Save Product
+        </button>
+    </form>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        // seleccionar el elemento formulario
+        const form = document.querySelector('form');
+        // escuchar el evento del formulario cuando envia
+        form.addEventListener('submit', e=>{
+           const nameProduct = document.querySelector('#name').value;
+           const priceProduct = document.querySelector('#price').value;
+           const descProduct = document.querySelector('#description').value;
+
+            const newProduct = {
+               name: nameProduct,
+               price: priceProduct,
+               description: descProduct
+            }
+           // enviar evento con info asi como socket, lo envia al index.js
+           ipcRenderer.send('product:new', newProduct)
+           e.preventDefault();
+        })
+    </script>
+</body>
+</html>
